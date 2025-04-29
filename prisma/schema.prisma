@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  password     String
+  firstName    String
+  lastName     String
+  majorId      Int
+  major        Department @relation(fields: [majorId], references: [id])
+  reviews      Review[]
+  reviewLikes  ReviewLike[]
+  reviewReports ReviewReport[] // Added opposite relation field
+  timetables   Timetable[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime? // Soft Delete
+}
+
+model Department {
+  id           Int       @id @default(autoincrement())
+  nameKr       String
+  nameEn       String
+  code         String
+  users        User[]
+  courses      Course[]
+  professors   ProfessorDepartment[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+}
+
+model Professor {
+  id           Int      @id @default(autoincrement())
+  name         String
+  departments  ProfessorDepartment[]
+  lectures     Lecture[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+}
+
+model ProfessorDepartment {
+  professorId  Int
+  departmentId Int
+  professor    Professor @relation(fields: [professorId], references: [id])
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  @@id([professorId, departmentId])
+}
+
+model Course {
+  id           Int      @id @default(autoincrement())
+  nameKr       String
+  nameEn       String
+  code         String
+  type         String  // Lecture or Experiment
+  credit       Int
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+  lectures     Lecture[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+}
+
+model Semester {
+  id           Int      @id @default(autoincrement())
+  year         Int
+  season       Season
+  lectures     Lecture[]
+  timetables   Timetable[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Season {
+  SPRING
+  SUMMER
+  FALL
+  WINTER
+}
+
+model Lecture {
+  id           Int      @id @default(autoincrement())
+  courseId     Int
+  course       Course @relation(fields: [courseId], references: [id])
+  semesterId   Int
+  semester     Semester @relation(fields: [semesterId], references: [id])
+  professorId  Int?
+  professor    Professor? @relation(fields: [professorId], references: [id])
+  startTime    String
+  daysOfWeek   String // ex: "Mon,Wed"
+  reviews      Review[]
+  timetableEntries TimetableEntry[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  lectureId    Int
+  content      String
+  grade        Grade
+  easiness     Grade
+  lectureEval  Grade
+  likes        ReviewLike[]
+  reports      ReviewReport[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lecture      Lecture  @relation(fields: [lectureId], references: [id])
+
+  @@unique([userId, lectureId]) // 한 유저가 같은 강의에 리뷰 하나만 작성 가능
+}
+
+enum Grade {
+  A
+  B
+  C
+  D
+  F
+}
+
+model ReviewLike {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  reviewId     Int
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review       Review   @relation(fields: [reviewId], references: [id])
+
+  @@unique([userId, reviewId])
+}
+
+model ReviewReport {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  reviewId     Int
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review       Review   @relation(fields: [reviewId], references: [id])
+
+  @@unique([userId, reviewId])
+}
+
+model Timetable {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  semesterId   Int
+  entries      TimetableEntry[]
+
+  user         User     @relation(fields: [userId], references: [id])
+  semester     Semester @relation(fields: [semesterId], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+}
+
+model TimetableEntry {
+  id           Int      @id @default(autoincrement())
+  timetableId  Int
+  lectureId    Int
+
+  timetable    Timetable @relation(fields: [timetableId], references: [id])
+  lecture      Lecture   @relation(fields: [lectureId], references: [id])
+
+  @@unique([timetableId, lectureId]) // 중복 추가 방지
+}

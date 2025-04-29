@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Asia/Seoul
+    volumes:
+      - ./docker-volume/mariadb/mysql:/var/lib/mysql
+      - ./docker-volume/mariadb/conf.d:/etc/mysql/conf.d
+    ports:
+      - '3306:3306'
