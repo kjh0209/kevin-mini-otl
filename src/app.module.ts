@@ -4,12 +4,13 @@ import { UsersController } from './users/users.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersService } from './users/users.service';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { CoursesModule } from './courses/courses.module';
 
 
 @Module({
   controllers: [UsersController],
   providers: [PrismaService, UsersService],
-  imports: [AuthModule],
+  imports: [AuthModule, CoursesModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
