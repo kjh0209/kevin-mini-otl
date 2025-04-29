@@ -94,6 +94,14 @@ enum Season {
   WINTER
 }
 
+enum DayOfWeek {
+  Mon
+  Tue
+  Wed
+  Thu
+  Fri
+}
+
 model Lecture {
   id           Int      @id @default(autoincrement())
   courseId     Int
@@ -103,12 +111,22 @@ model Lecture {
   professorId  Int?
   professor    Professor? @relation(fields: [professorId], references: [id])
   startTime    String
-  daysOfWeek   String // ex: "Mon,Wed"
+  endTime      String
+  lectureDays  LectureDay[]
   reviews      Review[]
   timetableEntries TimetableEntry[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   deletedAt    DateTime?
+}
+
+model LectureDay {
+  id          Int       @id @default(autoincrement())
+  lectureId   Int
+  dayOfWeek   DayOfWeek
+  lecture     Lecture   @relation(fields: [lectureId], references: [id])
+
+  @@unique([lectureId, dayOfWeek]) // 같은 강의에 중복 요일 등록 방지
 }
 
 model Review {

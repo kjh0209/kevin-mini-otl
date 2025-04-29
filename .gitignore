@@ -6,6 +6,8 @@ dist/
 *.tsbuildinfo
 
 # Env & config
+.env.development
+.env.production
 .env
 
 # Logs
