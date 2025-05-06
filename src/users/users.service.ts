@@ -1,7 +1,8 @@
 // 유저 찾기 + 비밀번호 검증
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../common/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { SignupUserDto } from './dto/signup-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -26,6 +27,7 @@ export class UsersService {
     firstName: string;
     lastName: string;
     majorId: number;
+    isAdmin?: boolean;
   }) {
     const existing = await this.prisma.user.findUnique({
       where: { email: data.email },
@@ -44,6 +46,7 @@ export class UsersService {
         firstName: data.firstName,
         lastName: data.lastName,
         majorId: data.majorId,
+        isAdmin: data.isAdmin || false,
       },
     });
 
@@ -58,5 +61,35 @@ export class UsersService {
       },
     });
   }
-  
+ 
+  async getLikedReviews(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        reviewLikes: {
+          where: { review: {deletedAt: null} },
+          include: {
+            review: {
+              include: {
+                lecture: true,
+                user: {
+                  select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    // 좋아요한 리뷰만 추출
+    return user.reviewLikes.map((like) => like.review);
+  }
+
 }

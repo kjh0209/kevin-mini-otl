@@ -21,6 +21,7 @@ model User {
   lastName     String
   majorId      Int
   major        Department @relation(fields: [majorId], references: [id])
+  isAdmin      Boolean   @default(false)
   reviews      Review[]
   reviewLikes  ReviewLike[]
   reviewReports ReviewReport[] // Added opposite relation field
@@ -141,6 +142,7 @@ model Review {
   reports      ReviewReport[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
 
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   lecture      Lecture  @relation(fields: [lectureId], references: [id])

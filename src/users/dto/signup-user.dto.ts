@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsInt } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsInt, IsOptional, IsBoolean  } from 'class-validator';
 
 export class SignupUserDto {
   @IsEmail()
@@ -18,4 +18,8 @@ export class SignupUserDto {
 
   @IsInt()
   majorId: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isAdmin?: boolean = false;
 }

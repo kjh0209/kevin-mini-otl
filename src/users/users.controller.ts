@@ -50,6 +50,7 @@ export class UsersController {
         firstName: user.firstName,
         lastName: user.lastName,
         majorId: user.majorId,
+        isAdmin: user.isAdmin,
       },
     };
 
@@ -63,4 +64,11 @@ export class UsersController {
       const user = await this.usersService.findById(Number(req.user.userId));
       return new ProfileResponseDto(user);
 }
+@UseGuards(JwtAuthGuard)
+@Get('reviews/likes')
+async getLikedReviews(@Req() req: RequestWithUser) {
+  const userId = req.user.userId;
+  return this.usersService.getLikedReviews(userId);
+}
+
 }

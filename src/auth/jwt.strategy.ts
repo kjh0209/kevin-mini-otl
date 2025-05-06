@@ -11,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    return { userId: payload.sub }; // 여기서 userId만 뽑아내서 요청에 붙임
+  async validate(payload: { userId: number; isAdmin: boolean }) {
+    return { userId: payload.userId, isAdmin: payload.isAdmin }; // 여기서 그대로 넘김
   }
 }
