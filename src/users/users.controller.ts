@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Req, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -70,5 +70,47 @@ async getLikedReviews(@Req() req: RequestWithUser) {
   const userId = req.user.userId;
   return this.usersService.getLikedReviews(userId);
 }
+
+@UseGuards(JwtAuthGuard)
+@Get(':userId/timetables')
+  getTimetables(@Param('userId') userId: string) {
+    return this.usersService.getTimetables(+userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':userId/timetables')
+  createTimetable(@Param('userId') userId: string) {
+    return this.usersService.createTimetable(+userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':userId/timetables/:timetableId/lectures/:lectureId')
+  async addLectureToTimetable(
+    @Param('userId') userId: string,
+    @Param('timetableId') timetableId: string,
+    @Param('lectureId') lectureId: string
+  ) {
+    return this.usersService.addLectureToTimetable(+userId, +timetableId, +lectureId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':userId/timetables/:timetableId/lectures/:lectureId')
+  async removeLectureFromTimetable(
+    @Param('userId') userId: string,
+    @Param('timetableId') timetableId: string,
+    @Param('lectureId') lectureId: string
+  ) {
+    return this.usersService.removeLectureFromTimetable(+userId, +timetableId, +lectureId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':userId/timetables/:timetableId')
+  getTimetableDetail(
+    @Param('userId') userId: string,
+    @Param('timetableId') timetableId: string
+  ) {
+    return this.usersService.getTimetableDetail(+userId, +timetableId);
+  }
+
 
 }

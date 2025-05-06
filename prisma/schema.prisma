@@ -201,6 +201,6 @@ model TimetableEntry {
 
   timetable    Timetable @relation(fields: [timetableId], references: [id])
   lecture      Lecture   @relation(fields: [lectureId], references: [id])
-
+  removedfromTimetableAt DateTime? // 삭제된 시간
   @@unique([timetableId, lectureId]) // 중복 추가 방지
 }
