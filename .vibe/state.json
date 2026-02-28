@@ -1,0 +1,116 @@
+{
+  "project": "kevin-mini-otl",
+  "lastUpdated": "2026-02-28T19:18:12.256Z",
+  "collaborators": {
+    "kjh0209": {
+      "name": "김찬혁",
+      "githubId": "kjh0209",
+      "lastActive": "2026-02-28T19:05:06.245Z"
+    }
+  },
+  "activeWork": {
+    "issueNumber": 1,
+    "actor": "kjh0209",
+    "stage": "qa_passed",
+    "startedAt": "2026-02-28T19:05:46.619Z",
+    "paused": false,
+    "pausedAt": null,
+    "retryCount": 0
+  },
+  "issues": [
+    {
+      "number": 1,
+      "title": "nestjs 백엔드에 맞는 nextjs 프론트엔드 구축으로 모노레포 구조 형성",
+      "status": "in_progress",
+      "branch": "vibe/kjh0209/1/nestjs-nextjs",
+      "assignee": "kjh0209",
+      "stage": "qa_passed",
+      "prNumber": null,
+      "intentLogPath": null
+    }
+  ],
+  "workLog": [
+    {
+      "actor": {
+        "name": "김찬혁",
+        "githubId": "kjh0209",
+        "agent": "antigravity"
+      },
+      "stage": "context_loaded",
+      "action": "start_session",
+      "message": "세션 시작: 김찬혁 (kjh0209) - antigravity",
+      "id": "log-1772305506256",
+      "timestamp": "2026-02-28T19:05:06.256Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "김찬혁"
+      },
+      "stage": "work_started",
+      "issueNumber": 1,
+      "action": "start_work",
+      "message": "작업 시작: #1 \"nestjs 백엔드에 맞는 nextjs 프론트엔드 구축으로 모노레포 구조 형성\"",
+      "filesChanged": [],
+      "id": "log-1772305546626",
+      "timestamp": "2026-02-28T19:05:46.626Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "김찬혁"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/globals.css",
+        "apps/web/src/app/layout.tsx",
+        "apps/web/next.config.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772305889255",
+      "timestamp": "2026-02-28T19:11:29.255Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "김찬혁"
+      },
+      "stage": "qa_passed",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 검토 통과, 팀 공유 대기",
+      "filesChanged": [
+        "apps/web/src/app/globals.css",
+        "apps/web/src/app/layout.tsx",
+        "apps/web/next.config.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772306292248",
+      "timestamp": "2026-02-28T19:18:12.248Z"
+    }
+  ]
+}

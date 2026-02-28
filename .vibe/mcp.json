@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "vibe-orchestrator": {
+      "command": "npx",
+      "args": [
+        "vibe-orchestrator",
+        "serve"
+      ],
+      "env": {}
+    }
+  }
+}

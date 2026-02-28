@@ -25,3 +25,4 @@ docker-volume/
 
 # VSCode
 .vscode/
+.agent
