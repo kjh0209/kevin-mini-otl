@@ -1,6 +1,6 @@
 {
   "project": "kevin-mini-otl",
-  "lastUpdated": "2026-02-28T19:18:12.256Z",
+  "lastUpdated": "2026-02-28T19:35:01.857Z",
   "collaborators": {
     "kjh0209": {
       "name": "김찬혁",
@@ -21,11 +21,11 @@
     {
       "number": 1,
       "title": "nestjs 백엔드에 맞는 nextjs 프론트엔드 구축으로 모노레포 구조 형성",
-      "status": "in_progress",
+      "status": "pr_created",
       "branch": "vibe/kjh0209/1/nestjs-nextjs",
       "assignee": "kjh0209",
-      "stage": "qa_passed",
-      "prNumber": null,
+      "stage": "pr_created",
+      "prNumber": 2,
       "intentLogPath": null
     }
   ],
@@ -111,6 +111,19 @@
       "retryCount": 0,
       "id": "log-1772306292248",
       "timestamp": "2026-02-28T19:18:12.248Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "김찬혁"
+      },
+      "stage": "pr_created",
+      "issueNumber": 1,
+      "action": "create_pr",
+      "message": "PR 생성: #2 (이슈 #1)",
+      "id": "log-1772307301856",
+      "timestamp": "2026-02-28T19:35:01.856Z"
     }
   ]
 }

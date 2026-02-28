@@ -1,54 +1,42 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useSWR from 'swr';
 import { fetchApi } from '@/lib/api';
 import Link from 'next/link';
 
 export default function DashboardPage() {
-    const [profile, setProfile] = useState<any>(null);
-    const [timetables, setTimetables] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newName, setNewName] = useState("");
+    const [newYear, setNewYear] = useState(new Date().getFullYear().toString());
+    const [newSemester, setNewSemester] = useState("1");
 
-    useEffect(() => {
-        async function loadDashboard() {
-            try {
-                const _profile = await fetchApi<any>('/users/profile');
-                setProfile(_profile);
+    const { data: profile, isLoading: isProfileLoading } = useSWR<any>('/users/profile', fetchApi);
+    const { data: timetables, mutate: mutateTimetables } = useSWR<any[]>(
+        profile ? `/users/${profile.id}/timetables` : null,
+        fetchApi
+    );
 
-                if (_profile) {
-                    const _timetables = await fetchApi<any[]>(`/users/${_profile.id}/timetables`);
-                    setTimetables(_timetables);
-                }
-            } catch (err) {
-                console.error('Failed to load dashboard', err);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadDashboard();
-    }, []);
-
-    const createTimetable = async () => {
-        const name = prompt("Enter a name for the new timetable:");
-        if (!name) return;
-
-        const year = parseInt(prompt("Enter year (e.g. 2024):") || "2024");
-        const semester = parseInt(prompt("Enter semester (id):") || "1");
-
+    const createTimetable = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             await fetchApi(`/users/${profile.id}/timetables`, {
                 method: 'POST',
-                body: JSON.stringify({ name, year, semester_id: semester }),
+                body: JSON.stringify({
+                    name: newName,
+                    year: parseInt(newYear),
+                    semester_id: parseInt(newSemester)
+                }),
             });
-            // Reload timetables
-            const _timetables = await fetchApi<any[]>(`/users/${profile.id}/timetables`);
-            setTimetables(_timetables);
+            setIsModalOpen(false);
+            setNewName("");
+            mutateTimetables();
         } catch (err) {
             alert('Failed to create timetable');
         }
     };
 
-    if (loading) return <div className="p-8 text-slate-400 animate-pulse">Loading dashboard...</div>;
+    if (isProfileLoading) return <div className="p-8 text-slate-400 animate-pulse">Loading dashboard...</div>;
 
     return (
         <div className="space-y-8">
@@ -57,7 +45,7 @@ export default function DashboardPage() {
                 <h1 className="text-3xl font-bold font-mono">Welcome back, {profile?.profile?.name || 'Student'}</h1>
                 <p className="text-slate-400 mt-2">Manage your timetables and explore courses for the upcoming semester.</p>
                 <div className="mt-6 flex space-x-4">
-                    <button onClick={createTimetable} className="btn-primary">Create Timetable</button>
+                    <button onClick={() => setIsModalOpen(true)} className="btn-primary">Create Timetable</button>
                     <Link href="/courses" className="btn-secondary">Browse Courses</Link>
                 </div>
             </section>
@@ -65,13 +53,13 @@ export default function DashboardPage() {
             {/* Timetables Grid */}
             <section>
                 <h2 className="text-xl font-bold mb-4 font-mono text-slate-200">Your Timetables</h2>
-                {timetables.length === 0 ? (
+                {!timetables || timetables.length === 0 ? (
                     <div className="text-slate-400 bg-slate-900/50 p-6 rounded-xl border border-dashed border-slate-700 text-center text-sm">
                         You haven't created any timetables yet. Create one to get started.
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {timetables.map(tt => (
+                        {timetables.map((tt: any) => (
                             <div key={tt.id} className="card group">
                                 <h3 className="text-lg font-bold text-white group-hover:text-cta transition-colors">{tt.name}</h3>
                                 <div className="text-sm text-slate-400 mt-1">Year {tt.year} • Semester {tt.semester.year} {tt.semester.season}</div>
@@ -84,6 +72,65 @@ export default function DashboardPage() {
                     </div>
                 )}
             </section>
+
+            {/* Create Timetable Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
+                        <h2 className="text-2xl font-bold text-white mb-6">New Timetable</h2>
+                        <form onSubmit={createTimetable} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-semibold mb-2 text-slate-300">Timetable Name</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={newName}
+                                    onChange={(e) => setNewName(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-cta"
+                                    placeholder="e.g. My Fall Schedule"
+                                />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2 text-slate-300">Year</label>
+                                    <input
+                                        type="number"
+                                        required
+                                        value={newYear}
+                                        onChange={(e) => setNewYear(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-cta"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2 text-slate-300">Semester ID</label>
+                                    <input
+                                        type="number"
+                                        required
+                                        value={newSemester}
+                                        onChange={(e) => setNewSemester(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-cta"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex gap-4 mt-6">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="flex-1 py-3 rounded-xl border border-slate-700 hover:bg-slate-800 transition-colors text-white font-medium"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-3 rounded-xl bg-cta hover:bg-cta/90 transition-colors text-slate-900 font-bold"
+                                >
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

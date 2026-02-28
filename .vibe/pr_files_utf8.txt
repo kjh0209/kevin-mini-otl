@@ -1,0 +1,68 @@
+﻿M	.gitignore
+A	.vibe/config.json
+A	.vibe/mcp.json
+A	.vibe/state.json
+A	CHARTER.md
+R100	eslint.config.mjs	apps/api/eslint.config.mjs
+R100	nest-cli.json	apps/api/nest-cli.json
+A	apps/api/package.json
+R100	prisma/schema.prisma	apps/api/prisma/schema.prisma
+R100	prisma/seed.ts	apps/api/prisma/seed.ts
+R100	src/app.module.ts	apps/api/src/app.module.ts
+R100	src/auth/admin.guard.ts	apps/api/src/auth/admin.guard.ts
+R100	src/auth/auth.module.ts	apps/api/src/auth/auth.module.ts
+R100	src/auth/auth.service.ts	apps/api/src/auth/auth.service.ts
+R100	src/auth/jwt-auth.guard.ts	apps/api/src/auth/jwt-auth.guard.ts
+R100	src/auth/jwt.strategy.ts	apps/api/src/auth/jwt.strategy.ts
+R100	src/auth/request-with-user.interface.ts	apps/api/src/auth/request-with-user.interface.ts
+R100	src/common/middleware/logger.middleware.ts	apps/api/src/common/middleware/logger.middleware.ts
+R100	src/common/prisma/prisma.service.ts	apps/api/src/common/prisma/prisma.service.ts
+R100	src/courses/courses.controller.ts	apps/api/src/courses/courses.controller.ts
+R100	src/courses/courses.module.ts	apps/api/src/courses/courses.module.ts
+R100	src/courses/courses.service.ts	apps/api/src/courses/courses.service.ts
+R100	src/courses/dto/create-review.dto.ts	apps/api/src/courses/dto/create-review.dto.ts
+R100	src/courses/dto/update-review.dto.ts	apps/api/src/courses/dto/update-review.dto.ts
+R100	src/main.ts	apps/api/src/main.ts
+R100	src/semesters/semesters.controller.ts	apps/api/src/semesters/semesters.controller.ts
+R100	src/semesters/semesters.module.ts	apps/api/src/semesters/semesters.module.ts
+R100	src/semesters/semesters.service.ts	apps/api/src/semesters/semesters.service.ts
+R100	src/users/dto/login-user.dto.ts	apps/api/src/users/dto/login-user.dto.ts
+R100	src/users/dto/profile-response.dto.ts	apps/api/src/users/dto/profile-response.dto.ts
+R100	src/users/dto/signup-user.dto.ts	apps/api/src/users/dto/signup-user.dto.ts
+R100	src/users/users.controller.ts	apps/api/src/users/users.controller.ts
+R100	src/users/users.service.ts	apps/api/src/users/users.service.ts
+R100	test/app.e2e-spec.ts	apps/api/test/app.e2e-spec.ts
+R100	test/jest-e2e.json	apps/api/test/jest-e2e.json
+R100	tsconfig.build.json	apps/api/tsconfig.build.json
+R100	tsconfig.json	apps/api/tsconfig.json
+A	apps/web/.gitignore
+A	apps/web/README.md
+A	apps/web/eslint.config.mjs
+A	apps/web/next.config.ts
+A	apps/web/package.json
+A	apps/web/postcss.config.mjs
+A	apps/web/public/file.svg
+A	apps/web/public/globe.svg
+A	apps/web/public/next.svg
+A	apps/web/public/vercel.svg
+A	apps/web/public/window.svg
+A	apps/web/src/app/auth/login/page.tsx
+A	apps/web/src/app/auth/register/page.tsx
+A	apps/web/src/app/courses/[id]/page.tsx
+A	apps/web/src/app/courses/page.tsx
+A	apps/web/src/app/dashboard/page.tsx
+A	apps/web/src/app/dashboard/timetables/[id]/page.tsx
+A	apps/web/src/app/favicon.ico
+A	apps/web/src/app/globals.css
+A	apps/web/src/app/layout.tsx
+A	apps/web/src/app/login/page.tsx
+A	apps/web/src/app/page.tsx
+A	apps/web/src/app/signup/page.tsx
+A	apps/web/src/components/Navigation.tsx
+A	apps/web/src/lib/api.ts
+A	apps/web/tsconfig.json
+A	design-system-utf8.md
+A	design-system.md
+A	design-system/kevin-mini-otl/MASTER.md
+M	package-lock.json
+M	package.json

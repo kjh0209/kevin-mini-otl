@@ -1,15 +1,9 @@
-export const API_BASE = '/api';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export const fetchApi = async <T = any>(endpoint: string, options: RequestInit = {}): Promise<T> => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
     const headers = new Headers(options.headers || {});
     if (!headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json');
-    }
-
-    if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
     }
 
     const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -30,11 +24,4 @@ export const fetchApi = async <T = any>(endpoint: string, options: RequestInit =
     return null as unknown as T;
 };
 
-export const clearAuth = () => {
-    if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-        const Cookies = require('js-cookie');
-        Cookies.remove('token');
-        window.location.href = '/login';
-    }
-};
+

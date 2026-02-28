@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetchApi } from "@/lib/api";
+import { loginAction } from "@/app/actions/auth";
 import Link from "next/link";
 
 export default function Login() {
@@ -14,12 +14,8 @@ export default function Login() {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const data = await fetchApi("/auth/login", {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-            });
-            localStorage.setItem("token", data.access_token);
-            router.push("/");
+            await loginAction(email, password);
+            router.push("/dashboard");
         } catch (err: any) {
             setError(err.message);
         }

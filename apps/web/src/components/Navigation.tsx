@@ -1,14 +1,20 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { clearAuth } from '@/lib/api';
+import { useRouter, usePathname } from 'next/navigation';
+import { logoutAction } from '@/app/actions/auth';
 
 export default function Navigation() {
+    const router = useRouter();
     const pathname = usePathname();
 
+    const handleLogout = async () => {
+        await logoutAction();
+        router.push('/auth/login');
+    };
+
     // Hide nav on auth pages
-    if (pathname === '/login' || pathname === '/signup') return null;
+    if (pathname === '/auth/login' || pathname === '/auth/register') return null;
 
     return (
         <nav className="border-b border-gray-800 bg-background/80 backdrop-blur-md sticky top-0 z-50">
@@ -37,7 +43,7 @@ export default function Navigation() {
 
                     <div>
                         <button
-                            onClick={clearAuth}
+                            onClick={handleLogout}
                             className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
                         >
                             Log out
