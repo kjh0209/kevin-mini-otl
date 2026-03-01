@@ -18,6 +18,11 @@ export async function loginAction(email: string, password: string) {
     }
 
     const data = await res.json();
+
+    if (!data.accessToken) {
+        throw new Error("Login failed - no token received");
+    }
+
     const cookieStore = await cookies();
     cookieStore.set("token", data.accessToken, {
         httpOnly: false,

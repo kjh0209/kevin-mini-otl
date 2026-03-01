@@ -1,4 +1,6 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
+import Cookies from 'js-cookie';
+
+export const API_BASE = '/api';
 
 export const fetchApi = async <T = unknown>(endpoint: string, options: RequestInit = {}): Promise<T> => {
     const headers = new Headers(options.headers || {});
@@ -6,13 +8,10 @@ export const fetchApi = async <T = unknown>(endpoint: string, options: RequestIn
         headers.set('Content-Type', 'application/json');
     }
 
-    // Isomorphic check for token (client side document.cookie)
-    if (typeof document !== 'undefined') {
-        const tokenMatch = document.cookie.match(/(^|;)\s*token\s*=\s*([^;]+)/);
-        const token = tokenMatch ? tokenMatch[2] : null;
-        if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
-        }
+    // Attach JWT token from cookie
+    const token = Cookies.get('token');
+    if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
     }
 
     const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -22,7 +21,7 @@ export const fetchApi = async <T = unknown>(endpoint: string, options: RequestIn
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'API request failed');
+        throw new Error(errorData.message || `API request failed (${response.status})`);
     }
 
     const contentType = response.headers.get("content-type");
@@ -32,5 +31,3 @@ export const fetchApi = async <T = unknown>(endpoint: string, options: RequestIn
 
     return null as unknown as T;
 };
-
-

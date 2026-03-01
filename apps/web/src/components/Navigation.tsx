@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { logoutAction } from '@/app/actions/auth';
+import Cookies from 'js-cookie';
 
 export default function Navigation() {
     const router = useRouter();
@@ -12,17 +12,11 @@ export default function Navigation() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        // Simple client-side check for token in cookies
-        const checkAuth = () => {
-            setIsAuthenticated(document.cookie.includes('token='));
-        };
-
-        checkAuth();
-        // Optional: listen to custom events or interval if needed, but page reloads/navigation should trigger re-render
+        setIsAuthenticated(!!Cookies.get('token'));
     }, [pathname]);
 
-    const handleLogout = async () => {
-        await logoutAction();
+    const handleLogout = () => {
+        Cookies.remove('token');
         router.push('/login');
     };
 

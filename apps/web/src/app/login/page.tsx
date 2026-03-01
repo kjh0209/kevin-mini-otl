@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { fetchApi } from '@/lib/api';
 import Cookies from 'js-cookie';
 
 export default function LoginPage() {
@@ -10,17 +9,31 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
         try {
-            const data = await fetchApi<{ accessToken: string }>('/users/login', {
+            const res = await fetch('/api/users/login', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
-            Cookies.set('token', data.accessToken);
-            localStorage.setItem('token', data.accessToken);
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.message || 'Login failed');
+            }
+
+            const data = await res.json();
+
+            if (!data.accessToken) {
+                throw new Error('Invalid credentials');
+            }
+
+            Cookies.set('token', data.accessToken, { path: '/' });
             router.push('/dashboard');
         } catch (err) {
             if (err instanceof Error) {
@@ -28,6 +41,8 @@ export default function LoginPage() {
             } else {
                 setError('Login failed');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -64,8 +79,8 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <button type="submit" className="btn-primary w-full mt-6">
-                    Sign In
+                <button type="submit" className="btn-primary w-full mt-6" disabled={loading}>
+                    {loading ? 'Signing in...' : 'Sign In'}
                 </button>
 
                 <p className="text-center text-sm text-slate-400">
