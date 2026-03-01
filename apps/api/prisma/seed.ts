@@ -1,9 +1,27 @@
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+const prisma = new PrismaClient({
+  datasourceUrl: process.env.DATABASE_URL
+});
 
 async function main() {
+  // Clear previous data for idempotent seeding
+  await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `Department`;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `Professor`;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `ProfessorDepartment`;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `Course`;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `Semester`;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `Lecture`;');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE `LectureDay`;');
+  await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1;');
+
   // --- Step 1: Department 데이터 추가 ---
   await prisma.department.createMany({
+    skipDuplicates: true,
     data: [
       { id: 1, nameKr: '기계공학과', nameEn: 'Mechanical Engineering', code: 'ME' },
       { id: 2, nameKr: '전기및전자공학부', nameEn: 'Electrical Engineering', code: 'EE' },
@@ -66,6 +84,7 @@ async function main() {
 
   // --- Step 3: Course 데이터 추가 ---
   await prisma.course.createMany({
+    skipDuplicates: true,
     data: [
       { nameKr: 'PM의 역할과 이해', nameEn: 'Understanding PM Roles', code: '203', type: 'Lecture', credit: 3, departmentId: dept.ID },
       { nameKr: '융합형 인재 개론', nameEn: 'Introduction to TS', code: '200', type: 'Lecture', credit: 3, departmentId: dept.TS },
@@ -76,11 +95,11 @@ async function main() {
       { nameKr: '슬기로운 대학원 생활', nameEn: 'Smart Grad Life', code: '445', type: 'Lecture', credit: 3, departmentId: dept.EE },
       { nameKr: '편하게 군대 다녀오기', nameEn: 'Easy Military Service', code: '210', type: 'Lecture', credit: 3, departmentId: dept.EE },
       { nameKr: '스팍스에서 디자이너로 살아남기', nameEn: 'How to Survive as Designer in SPARCS', code: '312', type: 'Lecture', credit: 3, departmentId: dept.ID },
-      { nameKr: '피그마 개론 1', nameEn: 'Figma Intro 1', code: '320', type: 'Lecture', credit: 3, departmentId: dept.ID},
-      { nameKr: '피그마 개론 심화 2', nameEn: 'Figma Intro Advanced 2', code: '330', type: 'Lecture', credit: 3, departmentId: dept.ID},
-      { nameKr: '우당탕탕 자취개론', nameEn: 'Introduction to the wild and wild life of a single person', code: '201', type: 'Lecture', credit: 3, departmentId: dept.BTM},
-      { nameKr: '자바스크립트 개론', nameEn: 'Introduction to javascript', code: '200', type: 'Lecture', credit: 3, departmentId: dept.CS},  
-      { nameKr: '타입스크립트 개론', nameEn: 'Introduction to typescript', code: '300', type: 'Lecture', credit: 3, departmentId: dept.CS}
+      { nameKr: '피그마 개론 1', nameEn: 'Figma Intro 1', code: '320', type: 'Lecture', credit: 3, departmentId: dept.ID },
+      { nameKr: '피그마 개론 심화 2', nameEn: 'Figma Intro Advanced 2', code: '330', type: 'Lecture', credit: 3, departmentId: dept.ID },
+      { nameKr: '우당탕탕 자취개론', nameEn: 'Introduction to the wild and wild life of a single person', code: '201', type: 'Lecture', credit: 3, departmentId: dept.BTM },
+      { nameKr: '자바스크립트 개론', nameEn: 'Introduction to javascript', code: '200', type: 'Lecture', credit: 3, departmentId: dept.CS },
+      { nameKr: '타입스크립트 개론', nameEn: 'Introduction to typescript', code: '300', type: 'Lecture', credit: 3, departmentId: dept.CS }
     ],
   });
 
@@ -94,44 +113,44 @@ async function main() {
   });
 
 
-// --- Step 6: 여러 Lecture 데이터 추가 ---
+  // --- Step 6: 여러 Lecture 데이터 추가 ---
 
-async function fetchCoursesAndProfessors(spring2025: { id: number }, fall2025: { id: number }) {
-  const [
-    PM,
-    TS,
-    OTL,
-    BREAK,
-    GradArmy,
-    HappyGrad,
-    SmartGrad,
-    EasyArmy,
-    SparcsDesigner,
-    Figma1,
-    Figma2,
-    SelfLiving,
-    JS_intro,
-    TS_intro
-  ] = await Promise.all([
-    prisma.course.findFirst({ where: { code: '203' } }),
-    prisma.course.findFirst({ where: { code: '200' } }),
-    prisma.course.findFirst({ where:  { code: '330', departmentId: dept.CS } }),
-    prisma.course.findFirst({ where: { code: '442' } }),
-    prisma.course.findFirst({ where: { code: '327' } }),
-    prisma.course.findFirst({ where: { code: '444' } }),
-    prisma.course.findFirst({ where: { code: '445' } }),
-    prisma.course.findFirst({ where: { code: '210' } }),
-    prisma.course.findFirst({ where: { code: '312' } }),
-    prisma.course.findFirst({ where: { code: '320' } }),
-    prisma.course.findFirst({ where: { code: '330' , departmentId: dept.ID } }),
-    prisma.course.findFirst({ where:  { code: '201', departmentId: dept.BTM } }),
-    prisma.course.findFirst({ where:  { code: '200', departmentId: dept.CS } }),
-    prisma.course.findFirst({ where:  { code: '300', departmentId: dept.CS } })
-    
-    
-  ]);
-  
-  const [
+  async function fetchCoursesAndProfessors(spring2025: { id: number }, fall2025: { id: number }) {
+    const [
+      PM,
+      TS,
+      OTL,
+      BREAK,
+      GradArmy,
+      HappyGrad,
+      SmartGrad,
+      EasyArmy,
+      SparcsDesigner,
+      Figma1,
+      Figma2,
+      SelfLiving,
+      JS_intro,
+      TS_intro
+    ] = await Promise.all([
+      prisma.course.findFirst({ where: { code: '203' } }),
+      prisma.course.findFirst({ where: { code: '200' } }),
+      prisma.course.findFirst({ where: { code: '330', departmentId: dept.CS } }),
+      prisma.course.findFirst({ where: { code: '442' } }),
+      prisma.course.findFirst({ where: { code: '327' } }),
+      prisma.course.findFirst({ where: { code: '444' } }),
+      prisma.course.findFirst({ where: { code: '445' } }),
+      prisma.course.findFirst({ where: { code: '210' } }),
+      prisma.course.findFirst({ where: { code: '312' } }),
+      prisma.course.findFirst({ where: { code: '320' } }),
+      prisma.course.findFirst({ where: { code: '330', departmentId: dept.ID } }),
+      prisma.course.findFirst({ where: { code: '201', departmentId: dept.BTM } }),
+      prisma.course.findFirst({ where: { code: '200', departmentId: dept.CS } }),
+      prisma.course.findFirst({ where: { code: '300', departmentId: dept.CS } })
+
+
+    ]);
+
+    const [
       larry,
       platypus,
       tom,
@@ -146,28 +165,28 @@ async function fetchCoursesAndProfessors(spring2025: { id: number }, fall2025: {
       prisma.professor.findFirst({ where: { name: 'duncan' } }),
       prisma.professor.findFirst({ where: { name: 'april' } }),
     ]);
-  
-    await prisma.lecture.create({ data: { id:1, courseId: PM!.id, professorId: yumyum!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:2, courseId: PM!.id, professorId: yumyum!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:3, courseId: TS!.id, professorId: tom!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:4, courseId: TS!.id, professorId: tom!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:5, courseId: OTL!.id, professorId: platypus!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:6, courseId: OTL!.id, professorId: platypus!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:7, courseId: BREAK!.id, professorId: larry!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:8, courseId: BREAK!.id, professorId: larry!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:9, courseId: GradArmy!.id, professorId: duncan!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:10, courseId: GradArmy!.id, professorId: duncan!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:11, courseId: EasyArmy!.id, professorId: larry!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:12, courseId: EasyArmy!.id, professorId: larry!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:13, courseId: SparcsDesigner!.id, professorId: yumyum!.id, semesterId: spring2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:14, courseId: SparcsDesigner!.id, professorId: yumyum!.id, semesterId: fall2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:15, courseId: SelfLiving!.id, professorId: april!.id, semesterId: fall2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:16, courseId: TS_intro!.id, professorId: platypus!.id, semesterId: fall2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:17, courseId: JS_intro!.id, professorId: april!.id, semesterId: spring2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } }});
-    await prisma.lecture.create({ data: { id:18, courseId: Figma1!.id, professorId: yumyum!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:19, courseId: Figma2!.id, professorId: yumyum!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } }});
-    await prisma.lecture.create({ data: { id:20, courseId: HappyGrad!.id, professorId: duncan!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Fri' }] } }});
-    await prisma.lecture.create({ data: { id:21, courseId: SmartGrad!.id, professorId: duncan!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Fri' }] } }});
+
+    await prisma.lecture.create({ data: { id: 1, courseId: PM!.id, professorId: yumyum!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 2, courseId: PM!.id, professorId: yumyum!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 3, courseId: TS!.id, professorId: tom!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 4, courseId: TS!.id, professorId: tom!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 5, courseId: OTL!.id, professorId: platypus!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 6, courseId: OTL!.id, professorId: platypus!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 7, courseId: BREAK!.id, professorId: larry!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 8, courseId: BREAK!.id, professorId: larry!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 9, courseId: GradArmy!.id, professorId: duncan!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 10, courseId: GradArmy!.id, professorId: duncan!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 11, courseId: EasyArmy!.id, professorId: larry!.id, semesterId: spring2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 12, courseId: EasyArmy!.id, professorId: larry!.id, semesterId: fall2025.id, startTime: '10:30', endTime: '12:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 13, courseId: SparcsDesigner!.id, professorId: yumyum!.id, semesterId: spring2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 14, courseId: SparcsDesigner!.id, professorId: yumyum!.id, semesterId: fall2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 15, courseId: SelfLiving!.id, professorId: april!.id, semesterId: fall2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 16, courseId: TS_intro!.id, professorId: platypus!.id, semesterId: fall2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 17, courseId: JS_intro!.id, professorId: april!.id, semesterId: spring2025.id, startTime: '14:30', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Tue' }, { dayOfWeek: 'Thu' }] } } });
+    await prisma.lecture.create({ data: { id: 18, courseId: Figma1!.id, professorId: yumyum!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 19, courseId: Figma2!.id, professorId: yumyum!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '14:30', lectureDays: { create: [{ dayOfWeek: 'Mon' }, { dayOfWeek: 'Wed' }] } } });
+    await prisma.lecture.create({ data: { id: 20, courseId: HappyGrad!.id, professorId: duncan!.id, semesterId: spring2025.id, startTime: '13:00', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Fri' }] } } });
+    await prisma.lecture.create({ data: { id: 21, courseId: SmartGrad!.id, professorId: duncan!.id, semesterId: fall2025.id, startTime: '13:00', endTime: '16:00', lectureDays: { create: [{ dayOfWeek: 'Fri' }] } } });
   }
 
   await fetchCoursesAndProfessors(spring2025, fall2025);

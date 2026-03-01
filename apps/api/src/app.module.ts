@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './common/prisma/prisma.service';
 import { UsersController } from './users/users.controller';
 import { AuthModule } from './auth/auth.module';
@@ -11,7 +12,12 @@ import { SemestersModule } from './semesters/semesters.module';
 @Module({
   controllers: [UsersController],
   providers: [PrismaService, UsersService],
-  imports: [AuthModule, CoursesModule, SemestersModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    CoursesModule,
+    SemestersModule
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

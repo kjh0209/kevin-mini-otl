@@ -1,6 +1,6 @@
 {
   "project": "kevin-mini-otl",
-  "lastUpdated": "2026-03-01T05:05:38.761Z",
+  "lastUpdated": "2026-03-01T06:24:33.644Z",
   "collaborators": {
     "jh23104": {
       "name": "kjh0209",
@@ -14,10 +14,10 @@
     }
   },
   "activeWork": {
-    "issueNumber": 1,
+    "issueNumber": 3,
     "actor": "jh23104",
     "stage": "qa_passed",
-    "startedAt": "2026-02-28T19:05:46.619Z",
+    "startedAt": "2026-03-01T06:24:25.965Z",
     "paused": false,
     "pausedAt": null,
     "retryCount": 0
@@ -31,6 +31,16 @@
       "assignee": "kjh0209",
       "stage": "qa_passed",
       "prNumber": 2,
+      "intentLogPath": null
+    },
+    {
+      "number": 3,
+      "title": "Fix backend Prisma schema, seed script, and JWT errors",
+      "status": "in_progress",
+      "branch": "vibe/jh23104/3/fix-backend-prisma-schema-seed",
+      "assignee": "jh23104",
+      "stage": "qa_passed",
+      "prNumber": null,
       "intentLogPath": null
     }
   ],
@@ -253,6 +263,44 @@
       "retryCount": 0,
       "id": "log-1772341538747",
       "timestamp": "2026-03-01T05:05:38.747Z"
+    },
+    {
+      "actor": {
+        "name": "jh23104",
+        "githubId": "jh23104",
+        "agent": "antigravity"
+      },
+      "stage": "work_started",
+      "issueNumber": 3,
+      "action": "start_work",
+      "message": "작업 시작: #3 \"Fix backend Prisma schema, seed script, and JWT errors\"",
+      "filesChanged": [],
+      "id": "log-1772346265971",
+      "timestamp": "2026-03-01T06:24:25.971Z"
+    },
+    {
+      "actor": {
+        "name": "jh23104",
+        "githubId": "jh23104",
+        "agent": "antigravity"
+      },
+      "stage": "qa_passed",
+      "issueNumber": 3,
+      "action": "checkpoint",
+      "message": "체크포인트: 검토 통과, 팀 공유 대기",
+      "filesChanged": [
+        "apps/api/.env",
+        "apps/api/prisma.config.ts",
+        "apps/api/prisma/seed.ts",
+        "apps/api/src/app.module.ts",
+        "apps/api/src/auth/auth.module.ts",
+        "apps/api/src/auth/jwt.strategy.ts",
+        "apps/api/package.json",
+        "apps/api/prisma/schema.prisma"
+      ],
+      "retryCount": 0,
+      "id": "log-1772346273636",
+      "timestamp": "2026-03-01T06:24:33.636Z"
     }
   ]
 }
