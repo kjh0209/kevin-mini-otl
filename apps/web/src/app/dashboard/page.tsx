@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { fetchApi } from '@/lib/api';
 import Link from 'next/link';
@@ -19,20 +20,27 @@ interface Timetable {
 }
 
 export default function DashboardPage() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newYear, setNewYear] = useState(new Date().getFullYear().toString());
     const [newSemester, setNewSemester] = useState("1");
 
-    const { data: profile, isLoading: isProfileLoading } = useSWR<Profile>('/users/profile', fetchApi);
+    const { data: profile, isLoading: isProfileLoading, error: profileError } = useSWR<Profile>('/users/profile', fetchApi);
     const { data: timetables, mutate: mutateTimetables } = useSWR<Timetable[]>(
-        profile ? `/users/${profile.id}/timetables` : null,
+        profile?.id ? `/users/${profile.id}/timetables` : null,
         fetchApi
     );
 
+    useEffect(() => {
+        if (profileError) {
+            router.push('/login');
+        }
+    }, [profileError, router]);
+
     const createTimetable = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!profile) return;
+        if (!profile?.id) return;
         try {
             await fetchApi(`/users/${profile.id}/timetables`, {
                 method: 'POST',

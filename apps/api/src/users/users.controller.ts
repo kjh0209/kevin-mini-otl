@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseGuards, Req, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Req, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -8,17 +8,17 @@ import { ProfileResponseDto } from './dto/profile-response.dto';
 import { Request } from 'express';
 
 export interface RequestWithUser extends Request {
-    user: {
-      userId: number;
-    };
-  }
+  user: {
+    userId: number;
+  };
+}
 
 @Controller('api/users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto): Promise<{ message: string; accessToken: string; refreshToken: string }> {
@@ -54,62 +54,62 @@ export class UsersController {
       },
     };
 
-    
+
   }
 
   @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    async getProfile(@Req() req: RequestWithUser): Promise<ProfileResponseDto> {
+  @Get('profile')
+  async getProfile(@Req() req: RequestWithUser): Promise<ProfileResponseDto> {
 
-      const user = await this.usersService.findById(Number(req.user.userId));
-      return new ProfileResponseDto(user);
-}
-@UseGuards(JwtAuthGuard)
-@Get('reviews/likes')
-async getLikedReviews(@Req() req: RequestWithUser) {
-  const userId = req.user.userId;
-  return this.usersService.getLikedReviews(userId);
-}
+    const user = await this.usersService.findById(Number(req.user.userId));
+    return new ProfileResponseDto(user);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('reviews/likes')
+  async getLikedReviews(@Req() req: RequestWithUser) {
+    const userId = req.user.userId;
+    return this.usersService.getLikedReviews(userId);
+  }
 
-@UseGuards(JwtAuthGuard)
-@Get(':userId/timetables')
-  getTimetables(@Param('userId') userId: string) {
-    return this.usersService.getTimetables(+userId);
+  @UseGuards(JwtAuthGuard)
+  @Get(':userId/timetables')
+  getTimetables(@Param('userId', ParseIntPipe) userId: number) {
+    return this.usersService.getTimetables(userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':userId/timetables')
-  createTimetable(@Param('userId') userId: string) {
-    return this.usersService.createTimetable(+userId);
+  createTimetable(@Param('userId', ParseIntPipe) userId: number) {
+    return this.usersService.createTimetable(userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':userId/timetables/:timetableId/lectures/:lectureId')
   async addLectureToTimetable(
-    @Param('userId') userId: string,
-    @Param('timetableId') timetableId: string,
-    @Param('lectureId') lectureId: string
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('timetableId', ParseIntPipe) timetableId: number,
+    @Param('lectureId', ParseIntPipe) lectureId: number
   ) {
-    return this.usersService.addLectureToTimetable(+userId, +timetableId, +lectureId);
+    return this.usersService.addLectureToTimetable(userId, timetableId, lectureId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':userId/timetables/:timetableId/lectures/:lectureId')
   async removeLectureFromTimetable(
-    @Param('userId') userId: string,
-    @Param('timetableId') timetableId: string,
-    @Param('lectureId') lectureId: string
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('timetableId', ParseIntPipe) timetableId: number,
+    @Param('lectureId', ParseIntPipe) lectureId: number
   ) {
-    return this.usersService.removeLectureFromTimetable(+userId, +timetableId, +lectureId);
+    return this.usersService.removeLectureFromTimetable(userId, timetableId, lectureId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':userId/timetables/:timetableId')
   getTimetableDetail(
-    @Param('userId') userId: string,
-    @Param('timetableId') timetableId: string
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('timetableId', ParseIntPipe) timetableId: number
   ) {
-    return this.usersService.getTimetableDetail(+userId, +timetableId);
+    return this.usersService.getTimetableDetail(userId, timetableId);
   }
 
 

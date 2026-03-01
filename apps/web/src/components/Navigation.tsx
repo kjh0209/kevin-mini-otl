@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { logoutAction } from '@/app/actions/auth';
 
@@ -8,13 +9,25 @@ export default function Navigation() {
     const router = useRouter();
     const pathname = usePathname();
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        // Simple client-side check for token in cookies
+        const checkAuth = () => {
+            setIsAuthenticated(document.cookie.includes('token='));
+        };
+
+        checkAuth();
+        // Optional: listen to custom events or interval if needed, but page reloads/navigation should trigger re-render
+    }, [pathname]);
+
     const handleLogout = async () => {
         await logoutAction();
-        router.push('/auth/login');
+        router.push('/login');
     };
 
     // Hide nav on auth pages
-    if (pathname === '/auth/login' || pathname === '/auth/register') return null;
+    if (pathname === '/login' || pathname === '/signup' || pathname === '/auth/login' || pathname === '/auth/register') return null;
 
     return (
         <nav className="border-b border-gray-800 bg-background/80 backdrop-blur-md sticky top-0 z-50">
@@ -42,12 +55,29 @@ export default function Navigation() {
                     </div>
 
                     <div>
-                        <button
-                            onClick={handleLogout}
-                            className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
-                        >
-                            Log out
-                        </button>
+                        {isAuthenticated ? (
+                            <button
+                                onClick={handleLogout}
+                                className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
+                            >
+                                Log out
+                            </button>
+                        ) : (
+                            <div className="flex space-x-4">
+                                <Link
+                                    href="/login"
+                                    className="text-slate-300 hover:text-white text-sm font-medium transition-colors flex items-center"
+                                >
+                                    Log in
+                                </Link>
+                                <Link
+                                    href="/signup"
+                                    className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md text-sm font-bold transition-colors"
+                                >
+                                    Sign up
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

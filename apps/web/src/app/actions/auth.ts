@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function loginAction(email: string, password: string) {
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/users/login`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -19,8 +19,8 @@ export async function loginAction(email: string, password: string) {
 
     const data = await res.json();
     const cookieStore = await cookies();
-    cookieStore.set("token", data.access_token, {
-        httpOnly: true,
+    cookieStore.set("token", data.accessToken, {
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",

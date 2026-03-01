@@ -15,12 +15,12 @@ export default function LoginPage() {
         e.preventDefault();
         setError('');
         try {
-            const data = await fetchApi<{ access_token: string }>('/users/login', {
+            const data = await fetchApi<{ accessToken: string }>('/users/login', {
                 method: 'POST',
                 body: JSON.stringify({ email, password }),
             });
-            Cookies.set('token', data.access_token);
-            localStorage.setItem('token', data.access_token);
+            Cookies.set('token', data.accessToken);
+            localStorage.setItem('token', data.accessToken);
             router.push('/dashboard');
         } catch (err) {
             if (err instanceof Error) {

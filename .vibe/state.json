@@ -1,6 +1,6 @@
 {
   "project": "kevin-mini-otl",
-  "lastUpdated": "2026-03-01T06:24:33.644Z",
+  "lastUpdated": "2026-03-01T06:26:01.601Z",
   "collaborators": {
     "jh23104": {
       "name": "kjh0209",
@@ -36,11 +36,11 @@
     {
       "number": 3,
       "title": "Fix backend Prisma schema, seed script, and JWT errors",
-      "status": "in_progress",
+      "status": "pr_created",
       "branch": "vibe/jh23104/3/fix-backend-prisma-schema-seed",
       "assignee": "jh23104",
-      "stage": "qa_passed",
-      "prNumber": null,
+      "stage": "pr_created",
+      "prNumber": 4,
       "intentLogPath": null
     }
   ],
@@ -301,6 +301,19 @@
       "retryCount": 0,
       "id": "log-1772346273636",
       "timestamp": "2026-03-01T06:24:33.636Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "pr_created",
+      "issueNumber": 3,
+      "action": "create_pr",
+      "message": "PR 생성: #4 (이슈 #3)",
+      "id": "log-1772346361601",
+      "timestamp": "2026-03-01T06:26:01.601Z"
     }
   ]
 }

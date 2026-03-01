@@ -1,6 +1,7 @@
 import { Department } from '@prisma/client';
 
 export class ProfileResponseDto {
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
@@ -8,6 +9,7 @@ export class ProfileResponseDto {
   isAdmin: boolean;
 
   constructor(user: any) {
+    this.id = user.id;
     this.email = user.email;
     this.firstName = user.firstName;
     this.lastName = user.lastName;
