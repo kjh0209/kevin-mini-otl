@@ -33,8 +33,11 @@ export default function LoginPage() {
                 throw new Error('Invalid credentials');
             }
 
+            // Set cookie first
             Cookies.set('token', data.accessToken, { path: '/' });
-            router.push('/dashboard');
+
+            // Use full page navigation (not client-side) to ensure cookie is available
+            window.location.href = '/dashboard';
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
