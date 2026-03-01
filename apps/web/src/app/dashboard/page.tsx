@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { fetchApi } from '@/lib/api';
 import Link from 'next/link';
@@ -26,8 +26,13 @@ export default function DashboardPage() {
     const [newName, setNewName] = useState("");
     const [newYear, setNewYear] = useState(new Date().getFullYear().toString());
     const [newSemester, setNewSemester] = useState("1");
+    const [mounted, setMounted] = useState(false);
 
-    const token = Cookies.get('token');
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const token = mounted ? Cookies.get('token') : undefined;
 
     const { data: profile, isLoading: isProfileLoading, error: profileError } = useSWR<Profile>(
         token ? '/users/profile' : null,
@@ -56,9 +61,18 @@ export default function DashboardPage() {
             mutateTimetables();
         } catch (err) {
             console.error('Create timetable error:', err);
-            alert('Failed to create timetable');
+            if (err instanceof Error) {
+                alert(err.message);
+            } else {
+                alert('Failed to create timetable');
+            }
         }
     };
+
+    // Show loading during SSR and initial mount
+    if (!mounted || isProfileLoading) {
+        return <div className="p-8 text-slate-400 animate-pulse">Loading dashboard...</div>;
+    }
 
     // Not logged in
     if (!token) {
@@ -69,8 +83,6 @@ export default function DashboardPage() {
             </div>
         );
     }
-
-    if (isProfileLoading) return <div className="p-8 text-slate-400 animate-pulse">Loading dashboard...</div>;
 
     if (profileError) {
         return (

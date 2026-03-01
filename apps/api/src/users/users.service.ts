@@ -6,7 +6,7 @@ import { SignupUserDto } from './dto/signup-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async validateUser(email: string, password: string) {
     const user = await this.prisma.user.findFirst({
@@ -61,13 +61,13 @@ export class UsersService {
       },
     });
   }
- 
+
   async getLikedReviews(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {
         reviewLikes: {
-          where: { review: {deletedAt: null} },
+          where: { review: { deletedAt: null } },
           include: {
             review: {
               include: {
@@ -132,39 +132,39 @@ export class UsersService {
       const existingEnd = parseTime(existingLecture.endTime);
       for (const newDay of lectureToAdd.lectureDays) {
         if (existingLecture.lectureDays.some(d => d.dayOfWeek === newDay.dayOfWeek)) {
-         const overlap =
-        (newStart >= existingStart && newStart < existingEnd) ||
-        (newEnd > existingStart && newEnd <= existingEnd) ||
-        (newStart <= existingStart && newEnd >= existingEnd);
+          const overlap =
+            (newStart >= existingStart && newStart < existingEnd) ||
+            (newEnd > existingStart && newEnd <= existingEnd) ||
+            (newStart <= existingStart && newEnd >= existingEnd);
 
-        if (overlap) {
-        throw new ConflictException(
-          `Time conflict with existing lecture on ${newDay.dayOfWeek}`,
-        );
+          if (overlap) {
+            throw new ConflictException(
+              `Time conflict with existing lecture on ${newDay.dayOfWeek}`,
+            );
+          }
         }
       }
     }
-  }
-  function parseTime(timeStr: string): Date {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, 0, 0); // 시, 분, 초, 밀리초
-    return date;
-  }
+    function parseTime(timeStr: string): Date {
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0); // 시, 분, 초, 밀리초
+      return date;
+    }
 
-  for (const entry of timetable.entries) {
-    if (entry.lectureId === lectureId) {
-      entry.removedfromTimetableAt = null; // 복원 처리
-      return this.prisma.timetableEntry.update({
-        where: {
-          timetableId_lectureId: { timetableId, lectureId },
-        },
-        data: {
-          removedfromTimetableAt: null,
-        },
-      });
-  }
-  }
+    for (const entry of timetable.entries) {
+      if (entry.lectureId === lectureId) {
+        entry.removedfromTimetableAt = null; // 복원 처리
+        return this.prisma.timetableEntry.update({
+          where: {
+            timetableId_lectureId: { timetableId, lectureId },
+          },
+          data: {
+            removedfromTimetableAt: null,
+          },
+        });
+      }
+    }
     return this.prisma.timetableEntry.create({
       data: {
         timetableId,
@@ -225,14 +225,27 @@ export class UsersService {
     const now = new Date();
     const month = now.getMonth() + 1;
 
-    let season;
+    let season: string;
     if (3 <= month && month <= 6) season = 'SPRING';
     else if (9 <= month && month <= 12) season = 'FALL';
-    else throw new NotFoundException('No semester for current date');
+    else if (7 <= month && month <= 8) season = 'SUMMER';
+    else season = 'WINTER';
 
-    return await this.prisma.semester.findFirst({
-      where: { year: now.getFullYear(), season },
+    const year = now.getFullYear();
+
+    // Try to find existing semester
+    let semester = await this.prisma.semester.findFirst({
+      where: { year, season },
     });
+
+    // Auto-create if not found
+    if (!semester) {
+      semester = await this.prisma.semester.create({
+        data: { year, season },
+      });
+    }
+
+    return semester;
   }
 
 }
