@@ -87,7 +87,7 @@ export default function TimetableDetailPage() {
                 <div>
                     <Link href="/dashboard" className="text-cta text-sm hover:underline mb-2 inline-block">← Back to Dashboard</Link>
                     <h1 className="text-3xl font-bold font-mono text-white">{timetable.name}</h1>
-                    <div className="text-slate-400 mt-1">Year {timetable.year} • Semester {timetable.semester.year} {timetable.semester.season}</div>
+                    <div className="text-slate-400 mt-1">{timetable.semester ? `${timetable.semester.year} ${timetable.semester.season}` : ''}</div>
                 </div>
                 <button onClick={deleteTimetable} className="text-red-400 hover:text-red-300 transition-colors text-sm px-4 py-2 border border-red-900 rounded-lg hover:bg-red-900/20">
                     Delete Timetable

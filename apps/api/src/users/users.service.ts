@@ -95,7 +95,7 @@ export class UsersService {
   async getTimetables(userId: number) {
     return this.prisma.timetable.findMany({
       where: { userId, deletedAt: null },
-      include: { entries: true },
+      include: { semester: true, entries: true },
     });
   }
 
@@ -203,6 +203,7 @@ export class UsersService {
     const timetable = await this.prisma.timetable.findFirst({
       where: { id: timetableId, userId, deletedAt: null },
       include: {
+        semester: true,
         entries: {
           where: { removedfromTimetableAt: null },
           include: {
