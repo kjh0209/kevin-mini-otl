@@ -4,8 +4,16 @@ import useSWR from 'swr';
 import { fetchApi } from '@/lib/api';
 import Link from 'next/link';
 
+interface Course {
+    id: number;
+    title: string;
+    code: string;
+    summary: string | null;
+    lectures?: unknown[];
+}
+
 export default function CoursesPage() {
-    const { data: courses, isLoading } = useSWR<any[]>('/courses', fetchApi);
+    const { data: courses, isLoading } = useSWR<Course[]>('/courses', fetchApi);
 
     if (isLoading) return <div className="p-8 text-slate-400 animate-pulse">Loading courses...</div>;
 
@@ -17,7 +25,7 @@ export default function CoursesPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {courses?.map((course: any) => (
+                {courses?.map((course) => (
                     <Link href={`/courses/${course.id}`} key={course.id} className="card group hover:border-primary">
                         <div className="flex justify-between items-start">
                             <h3 className="text-lg font-bold text-white group-hover:text-cta transition-colors leading-tight">{course.title}</h3>

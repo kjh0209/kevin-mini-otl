@@ -14,7 +14,7 @@ export async function loginAction(email: string, password: string) {
 
     if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || "Invalid credentials");
+        throw new Error(err && typeof err === 'object' && 'message' in err ? String(err.message) : "Invalid credentials");
     }
 
     const data = await res.json();

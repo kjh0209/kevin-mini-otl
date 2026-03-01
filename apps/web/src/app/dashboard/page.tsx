@@ -5,20 +5,34 @@ import useSWR from 'swr';
 import { fetchApi } from '@/lib/api';
 import Link from 'next/link';
 
+interface Profile {
+    id: number;
+    profile?: { name: string };
+}
+
+interface Timetable {
+    id: number;
+    name: string;
+    year: number;
+    semester: { year: number; season: string };
+    lectures?: unknown[];
+}
+
 export default function DashboardPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newYear, setNewYear] = useState(new Date().getFullYear().toString());
     const [newSemester, setNewSemester] = useState("1");
 
-    const { data: profile, isLoading: isProfileLoading } = useSWR<any>('/users/profile', fetchApi);
-    const { data: timetables, mutate: mutateTimetables } = useSWR<any[]>(
+    const { data: profile, isLoading: isProfileLoading } = useSWR<Profile>('/users/profile', fetchApi);
+    const { data: timetables, mutate: mutateTimetables } = useSWR<Timetable[]>(
         profile ? `/users/${profile.id}/timetables` : null,
         fetchApi
     );
 
     const createTimetable = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!profile) return;
         try {
             await fetchApi(`/users/${profile.id}/timetables`, {
                 method: 'POST',
@@ -59,7 +73,7 @@ export default function DashboardPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {timetables.map((tt: any) => (
+                        {timetables.map((tt) => (
                             <div key={tt.id} className="card group">
                                 <h3 className="text-lg font-bold text-white group-hover:text-cta transition-colors">{tt.name}</h3>
                                 <div className="text-sm text-slate-400 mt-1">Year {tt.year} • Semester {tt.semester.year} {tt.semester.season}</div>

@@ -1,16 +1,21 @@
 {
   "project": "kevin-mini-otl",
-  "lastUpdated": "2026-02-28T19:35:01.857Z",
+  "lastUpdated": "2026-03-01T05:05:38.761Z",
   "collaborators": {
+    "jh23104": {
+      "name": "kjh0209",
+      "githubId": "jh23104",
+      "lastActive": "2026-02-28T19:05:06.245Z"
+    },
     "kjh0209": {
-      "name": "김찬혁",
+      "name": "kjh0209",
       "githubId": "kjh0209",
       "lastActive": "2026-02-28T19:05:06.245Z"
     }
   },
   "activeWork": {
     "issueNumber": 1,
-    "actor": "kjh0209",
+    "actor": "jh23104",
     "stage": "qa_passed",
     "startedAt": "2026-02-28T19:05:46.619Z",
     "paused": false,
@@ -24,7 +29,7 @@
       "status": "pr_created",
       "branch": "vibe/kjh0209/1/nestjs-nextjs",
       "assignee": "kjh0209",
-      "stage": "pr_created",
+      "stage": "qa_passed",
       "prNumber": 2,
       "intentLogPath": null
     }
@@ -32,7 +37,7 @@
   "workLog": [
     {
       "actor": {
-        "name": "김찬혁",
+        "name": "kjh0209",
         "githubId": "kjh0209",
         "agent": "antigravity"
       },
@@ -46,7 +51,7 @@
       "actor": {
         "agent": "antigravity",
         "githubId": "kjh0209",
-        "name": "김찬혁"
+        "name": "kjh0209"
       },
       "stage": "work_started",
       "issueNumber": 1,
@@ -60,7 +65,7 @@
       "actor": {
         "agent": "antigravity",
         "githubId": "kjh0209",
-        "name": "김찬혁"
+        "name": "kjh0209"
       },
       "stage": "code_complete",
       "issueNumber": 1,
@@ -88,7 +93,7 @@
       "actor": {
         "agent": "antigravity",
         "githubId": "kjh0209",
-        "name": "김찬혁"
+        "name": "kjh0209"
       },
       "stage": "qa_passed",
       "issueNumber": 1,
@@ -116,7 +121,7 @@
       "actor": {
         "agent": "antigravity",
         "githubId": "kjh0209",
-        "name": "김찬혁"
+        "name": "kjh0209"
       },
       "stage": "pr_created",
       "issueNumber": 1,
@@ -124,6 +129,130 @@
       "message": "PR 생성: #2 (이슈 #1)",
       "id": "log-1772307301856",
       "timestamp": "2026-02-28T19:35:01.856Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772308081550",
+      "timestamp": "2026-02-28T19:48:01.550Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx"
+      ],
+      "retryCount": 1,
+      "id": "log-1772341287583",
+      "timestamp": "2026-03-01T05:01:27.583Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx"
+      ],
+      "retryCount": 2,
+      "id": "log-1772341442099",
+      "timestamp": "2026-03-01T05:04:02.099Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/auth/register/page.tsx"
+      ],
+      "retryCount": 3,
+      "id": "log-1772341512563",
+      "timestamp": "2026-03-01T05:05:12.563Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "qa_passed",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 검토 통과, 팀 공유 대기",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/auth/register/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772341538747",
+      "timestamp": "2026-03-01T05:05:38.747Z"
     }
   ]
 }

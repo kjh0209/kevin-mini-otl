@@ -28,8 +28,12 @@ export default function SignupPage() {
                 }),
             });
             router.push('/login');
-        } catch (err: any) {
-            setError(err.message || 'Signup failed');
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Signup failed');
+            }
         }
     };
 

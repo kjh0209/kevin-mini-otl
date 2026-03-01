@@ -7,9 +7,9 @@ import Cookies from 'js-cookie';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [email, setEmail] = require('react').useState('');
-    const [password, setPassword] = require('react').useState('');
-    const [error, setError] = require('react').useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,8 +22,12 @@ export default function LoginPage() {
             Cookies.set('token', data.access_token);
             localStorage.setItem('token', data.access_token);
             router.push('/dashboard');
-        } catch (err: any) {
-            setError(err.message || 'Login failed');
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Login failed');
+            }
         }
     };
 
@@ -65,7 +69,7 @@ export default function LoginPage() {
                 </button>
 
                 <p className="text-center text-sm text-slate-400">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <a href="/signup" className="text-cta hover:underline">
                         Sign up
                     </a>

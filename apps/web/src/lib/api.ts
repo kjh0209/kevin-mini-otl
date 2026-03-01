@@ -1,6 +1,6 @@
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 
-export const fetchApi = async <T = any>(endpoint: string, options: RequestInit = {}): Promise<T> => {
+export const fetchApi = async <T = unknown>(endpoint: string, options: RequestInit = {}): Promise<T> => {
     const headers = new Headers(options.headers || {});
     if (!headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json');

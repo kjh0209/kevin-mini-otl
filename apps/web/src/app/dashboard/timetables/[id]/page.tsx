@@ -5,21 +5,41 @@ import { fetchApi } from '@/lib/api';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+interface Lecture {
+    id: number;
+    professor: string;
+    time_str: string;
+    room: string;
+    credit: number;
+    course: {
+        title: string;
+        code: string;
+    }
+}
+interface Profile { id: number }
+interface Timetable {
+    id: number;
+    name: string;
+    year: number;
+    semester: { year: number; season: string };
+    lectures?: Lecture[];
+}
+
 export default function TimetableDetailPage() {
     const { id } = useParams();
     const router = useRouter();
-    const [profile, setProfile] = useState<any>(null);
-    const [timetable, setTimetable] = useState<any>(null);
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [timetable, setTimetable] = useState<Timetable | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function load() {
             try {
-                const _profile = await fetchApi<any>('/users/profile');
+                const _profile = await fetchApi<Profile>('/users/profile');
                 setProfile(_profile);
 
                 if (_profile && id) {
-                    const _tt = await fetchApi<any>(`/users/${_profile.id}/timetables/${id}`);
+                    const _tt = await fetchApi<Timetable>(`/users/${_profile.id}/timetables/${id}`);
                     setTimetable(_tt);
                 }
             } catch (err) {
@@ -32,28 +52,28 @@ export default function TimetableDetailPage() {
     }, [id]);
 
     const deleteTimetable = async () => {
-        if (!confirm("Are you sure you want to delete this timetable?")) return;
+        if (!profile || !confirm("Are you sure you want to delete this timetable?")) return;
 
         try {
             await fetchApi(`/users/${profile.id}/timetables/${id}`, {
                 method: 'DELETE'
             });
             router.push('/dashboard');
-        } catch (err) {
+        } catch (_err) {
             alert('Failed to delete timetable');
         }
     };
 
     const removeLecture = async (lectureId: number) => {
-        if (!confirm("Remove lecture from timetable?")) return;
+        if (!profile || !confirm("Remove lecture from timetable?")) return;
 
         try {
             await fetchApi(`/users/${profile.id}/timetables/${id}/lectures/${lectureId}`, {
                 method: 'DELETE'
             });
-            const _tt = await fetchApi<any>(`/users/${profile.id}/timetables/${id}`);
+            const _tt = await fetchApi<Timetable>(`/users/${profile.id}/timetables/${id}`);
             setTimetable(_tt);
-        } catch (err) {
+        } catch (_err) {
             alert('Failed to remove lecture');
         }
     };
@@ -86,7 +106,7 @@ export default function TimetableDetailPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {timetable.lectures?.map((lecture: any) => (
+                        {timetable.lectures?.map((lecture) => (
                             <div key={lecture.id} className="bg-slate-900 border border-slate-800 rounded-xl p-6 relative group overflow-hidden">
                                 <button
                                     onClick={() => removeLecture(lecture.id)}

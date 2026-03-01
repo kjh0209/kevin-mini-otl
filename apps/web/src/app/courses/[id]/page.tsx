@@ -4,24 +4,29 @@ import { useEffect, useState } from 'react';
 import { fetchApi } from '@/lib/api';
 import { useParams } from 'next/navigation';
 
+interface Lecture { id: number, professor: string, time_str: string, room: string, quota: number, credit: number, type: string }
+interface Course { code: string, title: string, summary: string, lectures: Lecture[] }
+interface Profile { id: number }
+interface Timetable { id: number, name: string }
+
 export default function CourseDetailPage() {
     const { id } = useParams();
-    const [course, setCourse] = useState<any>(null);
-    const [profile, setProfile] = useState<any>(null);
-    const [timetables, setTimetables] = useState<any[]>([]);
+    const [course, setCourse] = useState<Course | null>(null);
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [timetables, setTimetables] = useState<Timetable[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function loadData() {
             try {
-                const _course = await fetchApi<any>(`/courses/${id}`);
+                const _course = await fetchApi<Course>(`/courses/${id}`);
                 setCourse(_course);
 
                 try {
-                    const _profile = await fetchApi<any>('/users/profile');
+                    const _profile = await fetchApi<Profile>('/users/profile');
                     setProfile(_profile);
                     if (_profile) {
-                        const _tt = await fetchApi<any[]>(`/users/${_profile.id}/timetables`);
+                        const _tt = await fetchApi<Timetable[]>(`/users/${_profile.id}/timetables`);
                         setTimetables(_tt);
                     }
                 } catch (e) {
@@ -49,8 +54,8 @@ export default function CourseDetailPage() {
                 method: 'POST'
             });
             alert('Successfully added!');
-        } catch (err: any) {
-            alert('Failed to add: ' + err.message);
+        } catch (err) {
+            alert('Failed to add: ' + (err instanceof Error ? err.message : String(err)));
         }
     };
 
@@ -75,7 +80,7 @@ export default function CourseDetailPage() {
                             No lectures available for this course.
                         </div>
                     ) : (
-                        course.lectures?.map((lecture: any) => (
+                        course.lectures?.map((lecture) => (
                             <div key={lecture.id} className="bg-slate-900/50 border border-slate-800 rounded-xl p-5 hover:border-slate-600 transition-colors relative">
                                 <div className="flex justify-between items-center mb-3">
                                     <div className="text-white font-semibold text-lg">{lecture.professor}</div>

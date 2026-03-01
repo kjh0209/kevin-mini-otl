@@ -26,8 +26,12 @@ export default function Register() {
                 body: JSON.stringify(formData),
             });
             router.push("/auth/login");
-        } catch (err: any) {
-            setError(err.message || "Registration failed");
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Registration failed");
+            }
         }
     };
 
