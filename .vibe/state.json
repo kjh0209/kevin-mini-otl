@@ -1,0 +1,319 @@
+{
+  "project": "kevin-mini-otl",
+  "lastUpdated": "2026-03-01T06:26:01.601Z",
+  "collaborators": {
+    "jh23104": {
+      "name": "kjh0209",
+      "githubId": "jh23104",
+      "lastActive": "2026-02-28T19:05:06.245Z"
+    },
+    "kjh0209": {
+      "name": "kjh0209",
+      "githubId": "kjh0209",
+      "lastActive": "2026-02-28T19:05:06.245Z"
+    }
+  },
+  "activeWork": {
+    "issueNumber": 3,
+    "actor": "jh23104",
+    "stage": "qa_passed",
+    "startedAt": "2026-03-01T06:24:25.965Z",
+    "paused": false,
+    "pausedAt": null,
+    "retryCount": 0
+  },
+  "issues": [
+    {
+      "number": 1,
+      "title": "nestjs 백엔드에 맞는 nextjs 프론트엔드 구축으로 모노레포 구조 형성",
+      "status": "pr_created",
+      "branch": "vibe/kjh0209/1/nestjs-nextjs",
+      "assignee": "kjh0209",
+      "stage": "qa_passed",
+      "prNumber": 2,
+      "intentLogPath": null
+    },
+    {
+      "number": 3,
+      "title": "Fix backend Prisma schema, seed script, and JWT errors",
+      "status": "pr_created",
+      "branch": "vibe/jh23104/3/fix-backend-prisma-schema-seed",
+      "assignee": "jh23104",
+      "stage": "pr_created",
+      "prNumber": 4,
+      "intentLogPath": null
+    }
+  ],
+  "workLog": [
+    {
+      "actor": {
+        "name": "kjh0209",
+        "githubId": "kjh0209",
+        "agent": "antigravity"
+      },
+      "stage": "context_loaded",
+      "action": "start_session",
+      "message": "세션 시작: 김찬혁 (kjh0209) - antigravity",
+      "id": "log-1772305506256",
+      "timestamp": "2026-02-28T19:05:06.256Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "work_started",
+      "issueNumber": 1,
+      "action": "start_work",
+      "message": "작업 시작: #1 \"nestjs 백엔드에 맞는 nextjs 프론트엔드 구축으로 모노레포 구조 형성\"",
+      "filesChanged": [],
+      "id": "log-1772305546626",
+      "timestamp": "2026-02-28T19:05:46.626Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/globals.css",
+        "apps/web/src/app/layout.tsx",
+        "apps/web/next.config.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772305889255",
+      "timestamp": "2026-02-28T19:11:29.255Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "qa_passed",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 검토 통과, 팀 공유 대기",
+      "filesChanged": [
+        "apps/web/src/app/globals.css",
+        "apps/web/src/app/layout.tsx",
+        "apps/web/next.config.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772306292248",
+      "timestamp": "2026-02-28T19:18:12.248Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "pr_created",
+      "issueNumber": 1,
+      "action": "create_pr",
+      "message": "PR 생성: #2 (이슈 #1)",
+      "id": "log-1772307301856",
+      "timestamp": "2026-02-28T19:35:01.856Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772308081550",
+      "timestamp": "2026-02-28T19:48:01.550Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx"
+      ],
+      "retryCount": 1,
+      "id": "log-1772341287583",
+      "timestamp": "2026-03-01T05:01:27.583Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx"
+      ],
+      "retryCount": 2,
+      "id": "log-1772341442099",
+      "timestamp": "2026-03-01T05:04:02.099Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/auth/register/page.tsx"
+      ],
+      "retryCount": 3,
+      "id": "log-1772341512563",
+      "timestamp": "2026-03-01T05:05:12.563Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "jh23104",
+        "name": "kjh0209"
+      },
+      "stage": "qa_passed",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 검토 통과, 팀 공유 대기",
+      "filesChanged": [
+        "apps/web/src/app/actions/auth.ts",
+        "apps/web/src/middleware.ts",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/app/auth/login/page.tsx",
+        "apps/web/src/components/Navigation.tsx",
+        "apps/web/src/app/dashboard/page.tsx",
+        "apps/web/src/app/courses/page.tsx",
+        "apps/web/src/app/dashboard/timetables/[id]/page.tsx",
+        "apps/web/src/app/login/page.tsx",
+        "apps/web/src/app/signup/page.tsx",
+        "apps/web/src/app/courses/[id]/page.tsx",
+        "apps/web/src/app/auth/register/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1772341538747",
+      "timestamp": "2026-03-01T05:05:38.747Z"
+    },
+    {
+      "actor": {
+        "name": "jh23104",
+        "githubId": "jh23104",
+        "agent": "antigravity"
+      },
+      "stage": "work_started",
+      "issueNumber": 3,
+      "action": "start_work",
+      "message": "작업 시작: #3 \"Fix backend Prisma schema, seed script, and JWT errors\"",
+      "filesChanged": [],
+      "id": "log-1772346265971",
+      "timestamp": "2026-03-01T06:24:25.971Z"
+    },
+    {
+      "actor": {
+        "name": "jh23104",
+        "githubId": "jh23104",
+        "agent": "antigravity"
+      },
+      "stage": "qa_passed",
+      "issueNumber": 3,
+      "action": "checkpoint",
+      "message": "체크포인트: 검토 통과, 팀 공유 대기",
+      "filesChanged": [
+        "apps/api/.env",
+        "apps/api/prisma.config.ts",
+        "apps/api/prisma/seed.ts",
+        "apps/api/src/app.module.ts",
+        "apps/api/src/auth/auth.module.ts",
+        "apps/api/src/auth/jwt.strategy.ts",
+        "apps/api/package.json",
+        "apps/api/prisma/schema.prisma"
+      ],
+      "retryCount": 0,
+      "id": "log-1772346273636",
+      "timestamp": "2026-03-01T06:24:33.636Z"
+    },
+    {
+      "actor": {
+        "agent": "antigravity",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "pr_created",
+      "issueNumber": 3,
+      "action": "create_pr",
+      "message": "PR 생성: #4 (이슈 #3)",
+      "id": "log-1772346361601",
+      "timestamp": "2026-03-01T06:26:01.601Z"
+    }
+  ]
+}

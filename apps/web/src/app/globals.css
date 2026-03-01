@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@source "./src";
+
+@theme {
+  --color-primary: #0F172A;
+  --color-secondary: #1E293B;
+  --color-cta: #22C55E;
+  --color-background: #020617;
+  --color-text: #F8FAFC;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-cta text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 cursor-pointer;
+  }
+
+  .btn-primary:hover {
+    @apply opacity-90 -translate-y-[1px];
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-primary border-2 border-primary px-6 py-3 rounded-lg font-semibold transition-all duration-200 cursor-pointer;
+  }
+
+  .card {
+    @apply bg-background border border-gray-800 rounded-xl p-6 shadow-md transition-all duration-200 cursor-pointer;
+  }
+
+  .card:hover {
+    @apply shadow-lg -translate-y-[2px];
+  }
+
+  .input {
+    @apply px-4 py-3 border border-slate-700 bg-slate-900 rounded-lg text-base transition-colors duration-200 text-text w-full;
+  }
+
+  .input:focus {
+    @apply border-primary outline-none shadow-[0_0_0_3px_rgba(15,23,42,0.2)];
+  }
+}
