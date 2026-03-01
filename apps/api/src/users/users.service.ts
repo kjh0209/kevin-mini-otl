@@ -225,7 +225,7 @@ export class UsersService {
     const now = new Date();
     const month = now.getMonth() + 1;
 
-    let season: string;
+    let season: 'SPRING' | 'FALL' | 'SUMMER' | 'WINTER';
     if (3 <= month && month <= 6) season = 'SPRING';
     else if (9 <= month && month <= 12) season = 'FALL';
     else if (7 <= month && month <= 8) season = 'SUMMER';
