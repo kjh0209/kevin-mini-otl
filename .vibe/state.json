@@ -1,23 +1,23 @@
 {
   "project": "kevin-mini-otl",
-  "lastUpdated": "2026-03-01T06:26:01.601Z",
+  "lastUpdated": "2026-04-18T17:44:46.889Z",
   "collaborators": {
     "jh23104": {
-      "name": "kjh0209",
+      "name": "jh23104",
       "githubId": "jh23104",
-      "lastActive": "2026-02-28T19:05:06.245Z"
+      "lastActive": "2026-03-14T07:40:52.477Z"
     },
     "kjh0209": {
-      "name": "kjh0209",
+      "name": "김찬혁",
       "githubId": "kjh0209",
-      "lastActive": "2026-02-28T19:05:06.245Z"
+      "lastActive": "2026-04-18T08:08:41.602Z"
     }
   },
   "activeWork": {
-    "issueNumber": 3,
+    "issueNumber": 5,
     "actor": "jh23104",
-    "stage": "qa_passed",
-    "startedAt": "2026-03-01T06:24:25.965Z",
+    "stage": "code_complete",
+    "startedAt": "2026-03-14T07:41:28.597Z",
     "paused": false,
     "pausedAt": null,
     "retryCount": 0
@@ -29,7 +29,7 @@
       "status": "pr_created",
       "branch": "vibe/kjh0209/1/nestjs-nextjs",
       "assignee": "kjh0209",
-      "stage": "qa_passed",
+      "stage": "code_complete",
       "prNumber": 2,
       "intentLogPath": null
     },
@@ -41,6 +41,16 @@
       "assignee": "jh23104",
       "stage": "pr_created",
       "prNumber": 4,
+      "intentLogPath": null
+    },
+    {
+      "number": 5,
+      "title": "72, 84, 99, 100에는 동물이 없는 것 같은데? 그리고 직접 봐보니까 나머지 그림",
+      "status": "in_progress",
+      "branch": "vibe/jh23104/5/72-84-99-100",
+      "assignee": "jh23104",
+      "stage": "work_started",
+      "prNumber": null,
       "intentLogPath": null
     }
   ],
@@ -314,6 +324,71 @@
       "message": "PR 생성: #4 (이슈 #3)",
       "id": "log-1772346361601",
       "timestamp": "2026-03-01T06:26:01.601Z"
+    },
+    {
+      "actor": {
+        "name": "jh23104",
+        "githubId": "jh23104",
+        "agent": "antigravity"
+      },
+      "stage": "context_loaded",
+      "action": "start_session",
+      "message": "세션 시작: jh23104 (jh23104) - antigravity",
+      "id": "log-1773474052482",
+      "timestamp": "2026-03-14T07:40:52.482Z"
+    },
+    {
+      "actor": {
+        "name": "jh23104",
+        "githubId": "jh23104",
+        "agent": "antigravity"
+      },
+      "stage": "work_started",
+      "issueNumber": 5,
+      "action": "start_work",
+      "message": "작업 시작: #5 \"72, 84, 99, 100에는 동물이 없는 것 같은데? 그리고 직접 봐보니까 나머지 그림\"",
+      "filesChanged": [],
+      "id": "log-1773474088602",
+      "timestamp": "2026-03-14T07:41:28.602Z"
+    },
+    {
+      "actor": {
+        "name": "김찬혁",
+        "githubId": "kjh0209",
+        "agent": "claude-code"
+      },
+      "stage": "context_loaded",
+      "action": "start_session",
+      "message": "세션 시작: 김찬혁 (kjh0209) - claude-code",
+      "id": "log-1776499721606",
+      "timestamp": "2026-04-18T08:08:41.606Z"
+    },
+    {
+      "actor": {
+        "agent": "claude-code",
+        "githubId": "kjh0209",
+        "name": "kjh0209"
+      },
+      "stage": "code_complete",
+      "issueNumber": 1,
+      "action": "checkpoint",
+      "message": "체크포인트: 코드 완료",
+      "filesChanged": [
+        "packages/core/src/types/puzzle.ts",
+        "packages/core/src/puzzles/puzzle-adapter.ts",
+        "packages/core/src/types/game.ts",
+        "packages/core/src/game/validator.ts",
+        "apps/web/hooks/useGameSession.ts",
+        "apps/mobile/hooks/useGameSession.ts",
+        "apps/web/components/game/AttemptGrid.tsx",
+        "apps/web/components/game/AttemptRow.tsx",
+        "apps/web/components/game/BlockCellTile.tsx",
+        "apps/web/app/play/page.tsx",
+        "apps/web/app/step/[code]/play/page.tsx"
+      ],
+      "retryCount": 0,
+      "id": "log-1776534286872",
+      "timestamp": "2026-04-18T17:44:46.873Z"
     }
   ]
 }
